@@ -30,7 +30,7 @@ export default function AppMapView() {
                 }}
             >
                 <Image 
-                source={require('../../../assets/images/redcar.png')} 
+                source={require('../../../assets/images/car-anchor.png')} 
                 style={{
                     width:30,
                     height:60
