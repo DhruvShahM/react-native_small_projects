@@ -4,8 +4,29 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import LoginScreen from './App/Screen/LoginScreen/LoginScreen';
+import { ClerkProvider,SignedIn, SignedOut } from '@clerk/clerk-expo';
+import * as SecureStore from "expo-secure-store";
+import TabNavigation from './App/Navigations/TabNavigation';
+import { NavigationContainer } from '@react-navigation/native';
 
 SplashScreen.preventAutoHideAsync();
+
+const tokenCache = {
+  async getToken(key) {
+    try {
+      return SecureStore.getItemAsync(key);
+    } catch (err) {
+      return null;
+    }
+  },
+  async saveToken(key, value) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (err) {
+      return;
+    }
+  },
+};
 
 export default function App() {
 
@@ -27,10 +48,21 @@ export default function App() {
 
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <LoginScreen />
-      <StatusBar style="auto" />
-    </View>
+    <ClerkProvider 
+    publishableKey={'pk_test_cHJlY2lvdXMtbG9jdXN0LTE2LmNsZXJrLmFjY291bnRzLmRldiQ'}
+    tokenCache={tokenCache}>
+      <View style={styles.container} onLayout={onLayoutRootView}>
+      <SignedIn>
+          <NavigationContainer>
+          <TabNavigation />
+          </NavigationContainer>
+        </SignedIn>
+        <SignedOut>
+        <LoginScreen />
+        </SignedOut>
+        <StatusBar style="auto" />
+      </View>
+    </ClerkProvider>
   );
 }
 
@@ -38,6 +70,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop:25
+    paddingTop: 25
   },
 });
