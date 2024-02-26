@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Image, StyleSheet, View } from 'react-native';
 import MapViewStyle from '../../utils/MapViewStyle.json';
 import { UserLocationContext } from '../../Context/UserLocationContext';
 
@@ -20,7 +20,23 @@ export default function AppMapView() {
                     latitudeDelta: 0.0422,
                     longitudeDelta: 0.0421
                 }}
-            />
+            >
+            <Marker
+                coordinate={{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    latitudeDelta: 0.0422,
+                    longitudeDelta: 0.0421
+                }}
+            >
+                <Image 
+                source={require('../../../assets/images/redcar.png')} 
+                style={{
+                    width:30,
+                    height:60
+                }} />
+            </Marker>
+            </MapView>
         </View>
     )
 }
